@@ -26,15 +26,31 @@ test.describe("demobaze", () => {
     // other icons 
   });
 
-  test('should fill sign in page', async ({page}) => {
-      await page.goto('https://demoblaze.com/');
-      const singinpage = new SignInPage(page);
-      const userModalIcons = new UserModalIcons(page);
-    
-      await userModalIcons.openUserModalIcon("#signin2");
-      await userModalIcons.submitUserModalIcon('#signInModalLabel');
+  // test('should fill sign in page', async ({page}) => {
+  //     await page.goto('https://demoblaze.com/');
+  //     const singinpage = new SignInPage(page);
+      
+  //     await singinpage.openUserModalIcon();
+  //     await singinpage.fillInputForUserName("Litvin99@gmail.com");
+  //     await singinpage.fillInputForPassword("Camel11case");
+  //     await singinpage.submitSinginUserAccount()
+  //   });
 
-      await singinpage.fillInputForUserName("marusetchenko99@gmail.com");
-      await singinpage.fillInputForPassword("Camel11case");
+    test('1', async ({page}) => {
+        await page.goto('https://demoblaze.com/');
+        const singinpage = new SignInPage(page);
+
+        await singinpage.openUserModalIcon();
+        await singinpage.signUpWithUsedUsernameAndPassword();
+        await singinpage.closeSingUpUserAccount();
+    });
+
+    test('2',async ({page}) => {
+        await page.goto('https://demoblaze.com/');
+        const singinpage = new SignInPage(page);
+
+        await singinpage.openUserModalIcon();
+        await singinpage.useTakenUsernamedWithNoPassword();
+        await singinpage.closeSingUpUserAccount();
     });
 })

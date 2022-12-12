@@ -7,6 +7,12 @@ class LoginPage extends BasePage {
     constructor(page){
         super(page);
     }
+    openUserModalIcon = async () => {
+        const loginItemInNav = await this.page.locator('#login2');
+        await loginItemInNav.click();
+
+        await expect( await this.page.locator('#logInModalLabel') ).toBeVisible();
+    }
 
     fillInputForUserName = async (userName) => {
         const fieldForUserName = await this.page.locator('#loginusername');
@@ -19,6 +25,13 @@ class LoginPage extends BasePage {
         const fieldForPassword = await this.page.locator('#loginpassword');
         await fieldForPassword.fill(password);
 
-        // await expect(fieldForPassword).toHaveValue(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+        await expect(fieldForPassword).toHaveValue(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+    }
+    submitLoginUserAccount = async () => {
+        const headerInModalIcon = await this.page.locator('//h5[@id="logInModalLabel"]');
+        await expect(headerInModalIcon).toBeVisible();
+
+        const submitButtonInIcon = await this.page.locator('//h5[@id="logInModalLabel"]/../..//button[contains(text(), "Log in")]');
+        await submitButtonInIcon.click();
     }
 }
