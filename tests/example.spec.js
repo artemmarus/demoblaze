@@ -2,7 +2,7 @@
 const {test, expect} = require('@playwright/test');
 const BasePage = require('../pageobjects/basepage');
 const UserModalIcons = require('../pageobjects/usermodalicons');
-const SignInPage = require('../pageobjects/singinpage');
+const SignUpPage = require('../pageobjects/singuppage');
 const LoginPage = require('../pageobjects/loginpage');
 
 test.describe("demobaze", () => {
@@ -16,41 +16,83 @@ test.describe("demobaze", () => {
     await basepage.checkThatItemsIsDisplayed("Monitors");
   });
   
-  test('should open user modal icons in the nav menu', async ({page}) => {
-    await page.goto('https://demoblaze.com/');
-    const userModalIcons = new UserModalIcons(page);
-    
-    await userModalIcons.openUserModalIcon("#signin2");
-    await userModalIcons.submitUserModalIcon('#signInModalLabel')
-
-    // other icons 
-  });
-
-  // test('should fill sign in page', async ({page}) => {
-  //     await page.goto('https://demoblaze.com/');
-  //     const singinpage = new SignInPage(page);
-      
-  //     await singinpage.openUserModalIcon();
-  //     await singinpage.fillInputForUserName("Litvin99@gmail.com");
-  //     await singinpage.fillInputForPassword("Camel11case");
-  //     await singinpage.submitSinginUserAccount()
-  //   });
-
-    test('1', async ({page}) => {
+  test('should try to sign up with used login and password', async ({page}) => {
         await page.goto('https://demoblaze.com/');
-        const singinpage = new SignInPage(page);
+        const singuppage = new SignUpPage(page);
 
-        await singinpage.openUserModalIcon();
-        await singinpage.signUpWithUsedUsernameAndPassword();
-        await singinpage.closeSingUpUserAccount();
+        await singuppage.openUserModalIcon();
+        await singuppage.signUpWithUsedUsernameAndPassword();
+        await singuppage.closeSingUpUserAccount();
     });
 
-    test('2',async ({page}) => {
+  test('should try to sign up with used login but without password',async ({page}) => {
         await page.goto('https://demoblaze.com/');
-        const singinpage = new SignInPage(page);
+        const singuppage = new SignUpPage(page);
 
-        await singinpage.openUserModalIcon();
-        await singinpage.useTakenUsernamedWithNoPassword();
-        await singinpage.closeSingUpUserAccount();
+        await singuppage.openUserModalIcon();
+        await singuppage.signUpWithUsernameWithNoPassword();
+        await singuppage.closeSingUpUserAccount();
+    });
+
+  test('should try to sign up with used password but without login',async ({page}) => {
+        await page.goto('https://demoblaze.com/');
+        const singuppage = new SignUpPage(page);
+
+        await singuppage.openUserModalIcon();
+        await singuppage.signUpWithPasswordAndNoUsername();
+        await singuppage.closeSingUpUserAccount();
+    });
+
+  test('should try to sign up as a new user',async ({page}) => {
+        await page.goto('https://demoblaze.com/');
+        const singuppage = new SignUpPage(page);
+
+        await singuppage.openUserModalIcon();
+        await singuppage.signUpWithUsedUsernameAndPasswordAsNewUser();
+        await singuppage.closeSingUpUserAccount();
+    });
+
+    test('should try to log in with wrong login and password', async ({page}) => {
+       await page.goto('https://demoblaze.com/');
+       const loginpage = new LoginPage(page);
+
+       await loginpage.openUserModalIcon();
+       await loginpage.logInWithUsedWrongUsernameAndPassword();
+       await loginpage.closeLogInpUserAccount();
+    });
+
+    test('should try to log in with login but without password', async ({page}) => {
+       await page.goto('https://demoblaze.com/');
+       const loginpage = new LoginPage(page);
+
+       await loginpage.openUserModalIcon();
+       await loginpage.logInUsedOnlyUserName();
+       await loginpage.closeLogInpUserAccount();
+    });
+
+    test('should try to log in with password but without login', async ({page}) => {
+       await page.goto('https://demoblaze.com/');
+       const loginpage = new LoginPage(page);
+
+       await loginpage.openUserModalIcon();
+       await loginpage.logInUsedOnlyPassword();
+       await loginpage.closeLogInpUserAccount();
+    });
+
+    test('should try ro log in with common login and password', async ({page}) => {
+       await page.goto('https://demoblaze.com/');
+       const loginpage = new LoginPage(page);
+
+       await loginpage.openUserModalIcon();
+       await loginpage.logInWithUsedUsernameAndPassword();
+    });
+
+    test('should add some item to the cart then delete it',  async ({page}) => {
+       await page.goto('https://demoblaze.com/');
+       const basepage = new BasePage(page);
+
+       await basepage.addItemToTheCart();
+       await basepage.addItemToTheCart2();
+       await basepage.deleteItemsFromTheCart();
     });
 })
