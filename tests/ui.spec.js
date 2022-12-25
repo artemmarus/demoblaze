@@ -1,11 +1,14 @@
 // @ts-check
 const {test, expect} = require('@playwright/test');
 const BasePage = require('../pageobjects/basepage');
-const UserModalIcons = require('../pageobjects/usermodalicons');
 const SignUpPage = require('../pageobjects/singuppage');
 const LoginPage = require('../pageobjects/loginpage');
 
 test.describe("demobaze", () => {
+
+   // test.beforeEach(async ({page}) => {
+   //    await page.goto('https://demoblaze.com/');
+   // });
    
   test('should displayed categories by click', async ({page}) => {
     await page.goto('https://demoblaze.com/');
@@ -13,7 +16,7 @@ test.describe("demobaze", () => {
     
     await basepage.checkThatItemsIsDisplayed("Phones");
     await basepage.checkThatItemsIsDisplayed("Laptops");
-    await basepage.checkThatItemsIsDisplayed("Monitors");
+    await basepage.checkThatItemsIsDisplayed("Monitors"); //  заменить на проверку сразу всех категорий
   });
   
   test('should try to sign up with used login and password', async ({page}) => {
@@ -79,7 +82,7 @@ test.describe("demobaze", () => {
        await loginpage.closeLogInpUserAccount();
     });
 
-    test('should try ro log in with common login and password', async ({page}) => {
+    test('should try to log in with common login and password', async ({page}) => {
        await page.goto('https://demoblaze.com/');
        const loginpage = new LoginPage(page);
 
@@ -92,7 +95,22 @@ test.describe("demobaze", () => {
        const basepage = new BasePage(page);
 
        await basepage.addItemToTheCart();
-       await basepage.addItemToTheCart2();
        await basepage.deleteItemsFromTheCart();
+    });
+
+    test("1", async ({page}) => {
+      await page.goto('https://demoblaze.com/');
+      const basepage = new BasePage(page);
+
+      await basepage.addItemToTheCart();
+      await basepage.createOrderWithItems();
+    })
+
+    test('should send message', async ({page}) => {
+       await page.goto('https://demoblaze.com/');
+       const basepage = new BasePage(page);
+
+       await basepage.openContactModalIcon();
+       await basepage.sendMessageToContact();
     });
 })
